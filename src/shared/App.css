@@ -448,7 +448,7 @@ label.dv-star-rating-full-star > i {
 }
 
 * {
-  outline: 1px dotted red;
+  /*outline: 1px dotted red;*/
 }
 
 .word-break {
@@ -501,4 +501,8 @@ label.dv-star-rating-full-star > i {
 .ant-collapse-content-box {
   padding-left: 4px !important;
   padding-right: 4px !important;
+}
+
+.justify-content-center {
+  justify-content: center;
 }
