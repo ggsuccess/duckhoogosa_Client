@@ -6,6 +6,10 @@ import "../shared/App.css";
 import CopyUrl from "../components/CopyUrl";
 
 let uniqid = require("uniqid");
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
+}
 
 class MySolved extends React.Component {
   confirm(problemId) {
@@ -122,9 +126,6 @@ class MySolved extends React.Component {
           {historyList}
         </div>
         <div className="bottom-container flex fdc">{null}</div>
-        <div className="top-container"></div>
-        <div className="middle-container">{historyList}</div>
-        <div className="bottom-container">{null}</div>
       </div>
     );
   }

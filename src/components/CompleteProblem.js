@@ -14,7 +14,11 @@ import { UploadToS3 } from "../client/upLoad";
 // import { nullLiteral } from "@babel/types";
 
 let uniqid = require("uniqid");
-let isDev = process.env.REACT_APP_LOG;
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
+}
+
 // Register the plugin
 registerPlugin(
   FilePondPluginFilePoster,
@@ -70,7 +74,11 @@ class CompleteProblem extends React.Component {
         );
       } else {
         isDev && console.log(problem);
-        // return null;
+        promise.push(
+          new Promise((resolve, reject) => {
+            resolve(null);
+          })
+        );
       }
     });
     let representImg =
@@ -86,6 +94,7 @@ class CompleteProblem extends React.Component {
         }
       });
     }
+    this.props.setRepreImg(null);
     Promise.all(promise)
       .then(v => {
         let problems = this.props.Problems.map((problem, num) => {
@@ -189,7 +198,7 @@ class CompleteProblem extends React.Component {
           overflow: "auto",
           width: "100%",
           height: "fit-content",
-          paddingTop:"0.5em",
+          paddingTop: "0.5em",
           paddingBottom: "4.5em"
         }}
       >

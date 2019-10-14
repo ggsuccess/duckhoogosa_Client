@@ -19,7 +19,10 @@ import LoadingComponent from "../components/LoadingComponent";
 import "./App.css";
 import Axios from "axios";
 
-const isDev = process.env.REACT_APP_LOG;
+let isDev = null;
+if (process.env.REACT_APP_LOG === "TRUE") {
+  isDev = true;
+}
 class App extends React.Component {
   constructor(prop) {
     super(prop);
@@ -44,13 +47,17 @@ class App extends React.Component {
       ).then(res => {
         isDev && console.log(res.data, "검증 1회");
         if (res.data["expires_in"] === undefined) {
-          isDev && console.log('잘못된 토큰 검증 집으로');
+          isDev && console.log("잘못된 토큰  검증 집으로");
           localStorage.clear();
           this.props.history.push("/login");
         } else {
           isDev && console.log("@@ 토큰 안전함 @@");
           if (this.state.isRefreshing === true) {
+            isDev &&
+              console.log("@@ 리프레시 상태 굳 이메일넣고 로그인 모드로");
             this.setState({ email: res.data.email });
+          } else {
+            isDev && console.log("토큰은 좋지만 리프레시 상태가 아님.")
           }
         }
       });
@@ -59,7 +66,7 @@ class App extends React.Component {
 
   refreshStart = () => {
     this.setState({ isRefreshing: true }, () => {
-      console.log("리프레시 스타트~~");
+      isDev && console.log("리프레시 스타트~~");
     });
   };
 
@@ -117,6 +124,7 @@ class App extends React.Component {
               if (!email) return <Redirect to="/login"></Redirect>;
               return (
                 <CreateProblem
+                  setRepreImg={this.setRepreImg}
                   email={this.state.email}
                   repreImg={this.state.repreImg}
                   {...props}
@@ -167,7 +175,6 @@ class App extends React.Component {
           <Route
             path="/SolvingProblem/:id"
             render={props => {
-              // console.log(email, "어디보자");
               if (!email)
                 return (
                   <Redirect
